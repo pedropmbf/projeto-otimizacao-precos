@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Café &amp; Cálculo — Otimizador de Preços</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- MathJax: renderiza as fórmulas em LaTeX (usamos \( \) e \[ \]) -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] },
+      svg: { fontCache: "global" },
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+  <!-- Plotly: desenha o mapa de lucro (curvas de nível) -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+</head>
+<body>
+  <header class="topo">
+    <div class="container">
+      <h1>☕ Café &amp; Cálculo</h1>
+      <p class="subtitulo">
+        Descubra o <strong>preço ideal</strong> de dois produtos que concorrem entre si
+        para <strong>maximizar o lucro</strong> do seu negócio — sem precisar entender de matemática.
+      </p>
+    </div>
+  </header>
+
+  <main class="container grade">
+    <!-- ============ ENTRADA DE DADOS ============ -->
+    <section class="cartao" id="cartao-entrada">
+      <h2>1. Seus números</h2>
+      <p class="ajuda-secao">
+        Escolha um <strong>tipo de negócio</strong> para começar com valores reais de
+        mercado — depois é só ajustar para a sua realidade.
+      </p>
+
+      <form id="form">
+        <label class="campo-cenario">
+          Tipo de negócio (cenário real)
+          <select id="cenario"></select>
+        </label>
+        <p class="descricao-cenario" id="descricao-cenario"></p>
+
+        <div class="produtos">
+          <!-- PRODUTO 1 -->
+          <fieldset>
+            <legend id="leg-p1">Produto 1</legend>
+            <label>
+              Demanda máxima por dia
+              <span class="dica" title="Quantas unidades você venderia por dia se o preço fosse muito baixo (quase de graça).">?</span>
+              <input type="number" step="any" name="a1" required />
+            </label>
+            <label>
+              Sensibilidade ao preço
+              <span class="dica" title="A cada R$ 1,00 de aumento no preço DESTE produto, quantas unidades a MENOS você vende por dia.">?</span>
+              <input type="number" step="any" name="b1" min="0.0001" required />
+            </label>
+            <label>
+              Custo por unidade (R$)
+              <span class="dica" title="Custo dos ingredientes/insumos para produzir uma unidade.">?</span>
+              <input type="number" step="any" name="m1" min="0" required />
+            </label>
+          </fieldset>
+
+          <!-- PRODUTO 2 -->
+          <fieldset>
+            <legend id="leg-p2">Produto 2</legend>
+            <label>
+              Demanda máxima por dia
+              <span class="dica" title="Quantas unidades você venderia por dia se o preço fosse muito baixo (quase de graça).">?</span>
+              <input type="number" step="any" name="a2" required />
+            </label>
+            <label>
+              Sensibilidade ao preço
+              <span class="dica" title="A cada R$ 1,00 de aumento no preço DESTE produto, quantas unidades a MENOS você vende por dia.">?</span>
+              <input type="number" step="any" name="b2" min="0.0001" required />
+            </label>
+            <label>
+              Custo por unidade (R$)
+              <span class="dica" title="Custo dos ingredientes/insumos para produzir uma unidade.">?</span>
+              <input type="number" step="any" name="m2" min="0" required />
+            </label>
+          </fieldset>
+        </div>
+
+        <fieldset>
+          <legend>Relação entre os produtos</legend>
+          <label>
+            Efeito de substituição
+            <span class="dica" title="Como são parecidos, quem encarece um costuma migrar para o outro. A cada R$ 1,00 de aumento no preço de UM produto, quantas unidades a MAIS do OUTRO você vende.">?</span>
+            <input type="number" step="any" name="g" required />
+          </label>
+          <label>
+            Custo fixo do dia (R$) — opcional
+            <span class="dica" title="Custos que não dependem da quantidade vendida (parte do aluguel, energia etc.). Pode deixar 0.">?</span>
+            <input type="number" step="any" name="F" min="0" value="0" />
+          </label>
+        </fieldset>
+
+        <div class="botoes">
+          <button type="submit" id="btn-calcular">Calcular preços ótimos</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ RESULTADO ============ -->
+    <section class="cartao oculto" id="cartao-resultado">
+      <h2>2. Recomendação</h2>
+
+      <div id="avisos"></div>
+
+      <div class="cards-resultado">
+        <div class="card-num">
+          <span class="rotulo" id="rot-p1">Preço ideal — Produto 1</span>
+          <span class="valor" id="r-p1">—</span>
+          <span class="sub" id="r-q1"></span>
+        </div>
+        <div class="card-num">
+          <span class="rotulo" id="rot-p2">Preço ideal — Produto 2</span>
+          <span class="valor" id="r-p2">—</span>
+          <span class="sub" id="r-q2"></span>
+        </div>
+        <div class="card-num destaque">
+          <span class="rotulo">Lucro máximo estimado</span>
+          <span class="valor" id="r-lucro">—</span>
+          <span class="sub" id="r-classificacao"></span>
+        </div>
+      </div>
+
+      <!-- MAPA DE LUCRO (CURVAS DE NÍVEL) -->
+      <div id="bloco-grafico" class="oculto">
+        <h3>Mapa de lucro</h3>
+        <p class="ajuda-secao">
+          Cada curva liga combinações de preços com o <strong>mesmo lucro</strong>.
+          A ⭐ marca o <strong>topo do morro</strong> — o par de preços ótimo.
+        </p>
+        <div id="grafico" class="grafico"></div>
+      </div>
+
+      <!-- COMO A SOLUÇÃO FOI OBTIDA -->
+      <details id="como" open>
+        <summary>Como a solução foi obtida (a matemática por trás)</summary>
+        <div class="explicacao">
+          <p class="nota-vars" id="m-legenda-vars"></p>
+
+          <h3>Função de lucro</h3>
+          <p>Demanda de cada produto (depende dos <em>dois</em> preços, pois concorrem entre si):</p>
+          <div id="m-demanda" class="math-bloco"></div>
+          <p>Lucro a maximizar:</p>
+          <div id="m-lucro" class="math-bloco"></div>
+
+          <h3>Gradiente — resolvemos \(\nabla \pi = 0\)</h3>
+          <p>As derivadas parciais zeradas dão o ponto crítico:</p>
+          <div id="m-grad1" class="math-bloco"></div>
+          <div id="m-grad2" class="math-bloco"></div>
+
+          <h3>Classificação (teste da Hessiana)</h3>
+          <div id="m-hess" class="math-bloco"></div>
+          <p id="m-teste" class="m-teste"></p>
+
+          <h3>Em palavras</h3>
+          <pre id="r-justificativa" class="justificativa"></pre>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="container">
+      <p>
+        Projeto acadêmico — Resolução de Problemas Multivariáveis (CESUPA).
+        Modelo inspirado em Forbes, K. F. (1988), <em>Pricing of related products by a
+        multiproduct monopolist</em>, Review of Industrial Organization, 3(3), 55–73.
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
