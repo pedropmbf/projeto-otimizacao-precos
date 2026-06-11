@@ -184,10 +184,3 @@ derivadas parciais, gradiente e máximos/mínimos — ajustar edição usada na
 disciplina.)*
 
 ---
-
-### Como exportar para PDF
-
-- **VS Code:** instale a extensão *Markdown PDF* → botão direito no arquivo →
-  *Markdown PDF: Export (pdf)*.
-- **Pandoc** (renderiza as fórmulas): `pandoc 04-relatorio.md -o relatorio.pdf
-  --pdf-engine=xelatex`.

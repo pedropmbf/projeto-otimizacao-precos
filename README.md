@@ -18,9 +18,9 @@ $\nabla \pi = 0$, **classifica** o ponto crítico e entrega ao usuário leigo um
 
 | Nome | Matrícula |
 |---|---|
-| *(preencher)* | |
-| *(preencher)* | |
-| *(preencher)* | |
+| *PEDRO PAULO DE MAGALHAES BEZERRA FILHO* |24070313 |
+| *YURI MONTEIRO ALENCAR AGUIAR* |24070309 |
+| *JOAO VITOR RATH DE SOUZA FRANCO* |24070338 |
 
 ---
 
@@ -39,7 +39,7 @@ $\nabla \pi = 0$, **classifica** o ponto crítico e entrega ao usuário leigo um
 A documentação acadêmica está em [`docs/`](docs/):
 [Prospecção](docs/01-prospeccao.md) · [Modelagem](docs/02-modelagem.md) ·
 [Persona](docs/03-persona.md) · [Relatório](docs/04-relatorio.md) ·
-[Apresentação](docs/05-apresentacao.md).
+[Slides (10)](docs/05-apresentacao.md) · [Guia de apresentação](docs/06-guia-apresentacao.md).
 
 ---
 
@@ -60,8 +60,8 @@ Pydantic e SymPy.
 ### 1. Obter o código
 
 ```bash
-git clone <URL-do-repositorio>
-cd projeto-otimizacao
+git clone https://github.com/pedropmbf/projeto-otimizacao-precos.git
+cd projeto-otimizacao-precos
 ```
 
 ### 2. Criar e ativar um ambiente virtual
@@ -144,7 +144,7 @@ Cada parâmetro de entrada:
 ## 📁 Estrutura do projeto
 
 ```
-projeto-otimizacao/
+projeto-otimizacao-precos/
 ├── backend/
 │   ├── app.py            # API FastAPI + serve o front-end
 │   ├── optimizer.py      # Motor simbólico (SymPy): gradiente, ∇π=0, Hessiana
