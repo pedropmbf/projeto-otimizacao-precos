@@ -53,9 +53,12 @@ disso, é um problema **real** e reconhecível, com uma persona natural. Detalhe
 
 ## 3. Persona e sua dor
 
-**Marina Albuquerque**, 34, dona da cafeteria *Grão & Co.* (Belém-PA). Vende ~80–100
-cafés/dia; seus carros-chefe são o **café especial coado** e o **cappuccino** —
-itens que disputam o mesmo cliente.
+**Marina Albuquerque**, 34 anos, é graduada em Administração e atuou seis anos no
+setor bancário antes de empreender. Há dois anos transformou a paixão por cafés na
+cafeteria *Grão & Co.*, no bairro do Umarizal, em Belém (PA), onde toca uma operação
+que vende de 80 a 100 bebidas por dia. Seus principais produtos são o **café especial
+coado** e o **cappuccino**, dois itens diretamente concorrentes que disputam a
+preferência do mesmo cliente matinal.
 
 **Dor.** Marina define preços por intuição e imitando a concorrência. Como os dois
 cafés são substitutos, promoções em um **canibalizam** o outro, e ela não consegue
@@ -151,6 +154,20 @@ lucro. A leitura de sensibilidade dá à persona uma regra prática: ao subir o 
 de um café em R\$ 1,00, repassar **metade** ao preço. O sistema também sinaliza
 quando os parâmetros não geram um máximo válido (canibalização forte, $g^2 \ge
 b_1b_2$), orientando a repensar o portfólio.
+
+### Visualização geométrica do espaço de lucro
+
+![Mapa de lucro: curvas de nível de pi(p1,p2) com o ótimo P* destacado](img/mapa-lucro.png)
+
+**Figura 1 — Mapa de lucro (curvas de nível).** Como o lucro é uma função
+**quadrática côncava** (Hessiana negativa definida), suas curvas de nível são
+**elipses concêntricas**. O ponto ótimo $P^*(9{,}00;\, 8{,}75)$ situa-se exatamente
+no **centro** das elipses — a região de maior lucro (tom mais escuro). A
+**inclinação** das elipses (eixos fora da horizontal/vertical) é o efeito visual do
+**termo cruzado** $2g\,p_1 p_2$: como os produtos competem, qualquer desvio no preço
+de um deles exige reajustar o preço do produto irmão para não perder margem
+aceleradamente. *(Figura gerada por `docs/img/gerar_grafico.py`, a partir da mesma
+função de lucro do sistema.)*
 
 ## 7. Conclusão
 

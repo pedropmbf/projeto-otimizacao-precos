@@ -70,6 +70,17 @@ $b_1 b_2 > g^2$ (ver §2.8). Quando o ótimo irrestrito cai fora dessa região, 
 solução está na **fronteira** (ex.: parar de vender um item) — o sistema detecta e
 avisa.
 
+**Caso restrito (ótimo na fronteira).** Se os parâmetros levam o ponto crítico
+analítico a uma região com $q_i < 0$ (economicamente inviável), o problema deixa de
+ter solução no interior e torna-se uma **otimização restrita** sobre uma região
+**fechada e limitada** (compacta). Como $\pi$ é contínua nessa região, o **teorema de
+Weierstrass** garante que o máximo existe; e, por $\pi$ ser **côncava** sobre um
+domínio **convexo**, esse máximo localiza-se necessariamente na **fronteira** — onde
+$q_i = 0$ ou $p_i = m_i$ —, o que, em termos econômicos, significa **descontinuar** o
+item canibalizado. Nesta versão, o sistema **detecta** essa situação (quando
+$q_i < 0$ ou a margem fica negativa) e **alerta** a persona recomendando rever o
+portfólio; a resolução automática do ótimo de fronteira fica como trabalho futuro.
+
 ## 2.6 Derivadas parciais e gradiente
 
 $$\frac{\partial \pi}{\partial p_1} = -2b_1\,p_1 + 2g\,p_2 + (a_1 + b_1 m_1 - g m_2)$$
