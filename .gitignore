@@ -15,3 +15,6 @@ Thumbs.db
 # Sistema operacional / temporários
 *.log
 *.tmp
+
+# Documentos não versionados
+docs/06-guia-apresentacao.md
