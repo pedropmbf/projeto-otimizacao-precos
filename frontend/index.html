@@ -99,6 +99,24 @@
           </label>
         </fieldset>
 
+        <fieldset class="fieldset-atual">
+          <legend>Quanto você cobra hoje? <span class="tag-opcional">opcional</span></legend>
+          <p class="ajuda-secao ajuda-mini">
+            Informe os preços que você pratica hoje para descobrir
+            <strong>quanto lucro a mais</strong> os preços ótimos podem trazer.
+          </p>
+          <div class="produtos">
+            <label>
+              Preço atual do Produto 1 (R$)
+              <input type="number" step="any" name="p1_atual" min="0" placeholder="ex.: 8,00" />
+            </label>
+            <label>
+              Preço atual do Produto 2 (R$)
+              <input type="number" step="any" name="p2_atual" min="0" placeholder="ex.: 8,00" />
+            </label>
+          </div>
+        </fieldset>
+
         <div class="botoes">
           <button type="submit" id="btn-calcular">Calcular preços ótimos</button>
         </div>
@@ -127,6 +145,26 @@
           <span class="valor" id="r-lucro">—</span>
           <span class="sub" id="r-classificacao"></span>
         </div>
+      </div>
+
+      <!-- COMPARAÇÃO COM OS PREÇOS ATUAIS (extra) -->
+      <div id="bloco-ganho" class="oculto">
+        <div class="ganho-cabecalho">
+          <h3>💰 Seu ganho ao adotar os preços ótimos</h3>
+        </div>
+        <div class="ganho-barras">
+          <div class="ganho-linha">
+            <span class="ganho-label">Hoje (seus preços)</span>
+            <div class="ganho-trilho"><div class="ganho-fill atual" id="ganho-fill-atual"></div></div>
+            <span class="ganho-valor" id="ganho-val-atual">—</span>
+          </div>
+          <div class="ganho-linha">
+            <span class="ganho-label">Com os preços ótimos</span>
+            <div class="ganho-trilho"><div class="ganho-fill otimo" id="ganho-fill-otimo"></div></div>
+            <span class="ganho-valor verde" id="ganho-val-otimo">—</span>
+          </div>
+        </div>
+        <p class="ganho-resumo" id="ganho-resumo"></p>
       </div>
 
       <!-- MAPA DE LUCRO (CURVAS DE NÍVEL) -->

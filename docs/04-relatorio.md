@@ -1,16 +1,9 @@
 # Relatório — Projeto Otimização
 
-> **Documento-base do relatório em PDF (5–10 páginas).** Revise, preencha os
-> campos *(entre parênteses)*, ajuste os números da persona para as estimativas
-> reais da equipe e exporte para PDF (sugestão: VS Code + extensão *Markdown PDF*,
-> ou Pandoc — veja o fim do arquivo). As fórmulas em `$$...$$` renderizam no
-> GitHub e no Pandoc.
-
----
-
 **Centro Universitário do Pará (CESUPA) — Ciência da Computação**
 **Disciplina:** Resolução de Problemas Multivariáveis — Prof. Pedro Girotto
-**Equipe:** *(nome 1, nome 2, nome 3)*
+**Equipe:** Pedro Paulo de Magalhães Bezerra Filho (24070313) · Yuri Monteiro
+Alencar Aguiar (24070309) · João Vitor Rath de Souza Franco (24070338)
 **Título:** Café & Cálculo — Otimização de preços de produtos relacionados por
 um monopolista multiproduto
 
@@ -182,8 +175,8 @@ via multiplicadores de Lagrange.)*
 
 ## 8. Declaração de uso de Inteligência Artificial
 
-*(Ajuste conforme o uso real da equipe.)* Utilizamos o assistente de IA **Claude
-(Anthropic)** como apoio em: (i) busca e triagem do artigo de referência;
+Utilizamos o assistente de IA **Claude (Anthropic)** como apoio em: (i) busca e
+triagem do artigo de referência;
 (ii) estruturação da modelagem e geração do código (FastAPI/SymPy e front-end);
 (iii) redação dos documentos. **Toda a matemática foi conferida manualmente pela
 equipe** — o exemplo numérico da §6 foi recalculado à mão e confere com a saída do
@@ -196,8 +189,7 @@ FORBES, Kevin F. Pricing of related products by a multiproduct monopolist.
 **Review of Industrial Organization**, v. 3, n. 3, p. 55–73, 1988. DOI:
 10.1007/BF02229566.
 
-STEWART, James. **Cálculo, volume 2.** São Paulo: Cengage Learning. *(capítulo de
-derivadas parciais, gradiente e máximos/mínimos — ajustar edição usada na
-disciplina.)*
+STEWART, James. **Cálculo, volume 2.** São Paulo: Cengage Learning. Capítulo de
+derivadas parciais, gradiente e máximos/mínimos de funções de várias variáveis.
 
 ---

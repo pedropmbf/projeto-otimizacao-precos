@@ -114,6 +114,10 @@ form.addEventListener("submit", async (ev) => {
     nome2: cenarioAtual.p2.nome,
   };
 
+  // Preços atuais (opcionais) para a comparação de ganho
+  const p1Atual = parseFloat(form.elements["p1_atual"].value);
+  const p2Atual = parseFloat(form.elements["p2_atual"].value);
+
   try {
     const resp = await fetch("/api/otimizar", {
       method: "POST",
@@ -130,7 +134,7 @@ form.addEventListener("submit", async (ev) => {
       mostrarErro((r.erros || ["Erro desconhecido."]).join(" "));
       return;
     }
-    renderizar(r);
+    renderizar(r, p1Atual, p2Atual);
   } catch (e) {
     mostrarErro("Não foi possível falar com o servidor. Ele está rodando?");
   } finally {
@@ -151,11 +155,12 @@ function mostrarErro(msg) {
   document.getElementById("avisos").innerHTML = `<div class="erro">⚠️ ${msg}</div>`;
   ["r-p1", "r-p2", "r-lucro"].forEach((id) => (document.getElementById(id).textContent = "—"));
   document.getElementById("bloco-grafico").classList.add("oculto");
+  document.getElementById("bloco-ganho").classList.add("oculto");
   cartaoResultado.scrollIntoView({ behavior: "smooth" });
 }
 
 // ---- Renderização do resultado -------------------------------------------
-function renderizar(r) {
+function renderizar(r, p1Atual, p2Atual) {
   cartaoResultado.classList.remove("oculto");
   const s = r.solucao;
   const nome1 = r.nomes.p1;
@@ -197,11 +202,61 @@ function renderizar(r) {
   // Justificativa textual
   document.getElementById("r-justificativa").textContent = r.justificativa;
 
-  // Tipografar as fórmulas e desenhar o gráfico
+  // Comparação com os preços atuais (extra), tipografia e gráfico
+  renderizarGanho(r, p1Atual, p2Atual);
   typesetMath();
   desenharGrafico(r);
 
   cartaoResultado.scrollIntoView({ behavior: "smooth" });
+}
+
+// ---- Comparação: lucro atual x lucro ótimo (feature extra) ----------------
+// Reusa a MESMA função de lucro do modelo (pi = (p-m)*q ...), avaliada nos
+// preços que a persona pratica hoje, para quantificar o ganho.
+function lucroDoModelo(e, x1, x2) {
+  const q1 = e.a1 - e.b1 * x1 + e.g * x2;
+  const q2 = e.a2 - e.b2 * x2 + e.g * x1;
+  return (x1 - e.m1) * q1 + (x2 - e.m2) * q2 - (e.F || 0);
+}
+
+function renderizarGanho(r, p1Atual, p2Atual) {
+  const bloco = document.getElementById("bloco-ganho");
+
+  // Só mostra se a persona informou os dois preços atuais (números válidos > 0)
+  const ok = [p1Atual, p2Atual].every((v) => Number.isFinite(v) && v > 0);
+  if (!ok || !r.entrada) {
+    bloco.classList.add("oculto");
+    return;
+  }
+  bloco.classList.remove("oculto");
+
+  const lucroAtual = lucroDoModelo(r.entrada, p1Atual, p2Atual);
+  const lucroOtimo = r.solucao.lucro;
+  const ganho = lucroOtimo - lucroAtual;
+
+  // Barras proporcionais (lucro <= 0 vira barra mínima visível)
+  const base = Math.max(lucroAtual, lucroOtimo, 1);
+  const pct = (v) => Math.max(2, Math.min(100, (v / base) * 100));
+  document.getElementById("ganho-fill-atual").style.width = pct(lucroAtual) + "%";
+  document.getElementById("ganho-fill-otimo").style.width = pct(lucroOtimo) + "%";
+  document.getElementById("ganho-val-atual").textContent = brl(lucroAtual) + "/dia";
+  document.getElementById("ganho-val-otimo").textContent = brl(lucroOtimo) + "/dia";
+
+  const resumo = document.getElementById("ganho-resumo");
+  if (ganho > 0.005) {
+    const mensal = ganho * 22; // ~22 dias úteis/mês
+    const pctTxt = lucroAtual > 0 ? ` (<strong>+${num((ganho / lucroAtual) * 100)}%</strong>)` : "";
+    resumo.innerHTML =
+      `Adotar os preços ótimos rende <strong class="verde">+${brl(ganho)}/dia</strong>${pctTxt} ` +
+      `a mais que os seus preços atuais — cerca de <strong>${brl(mensal)}/mês</strong> (22 dias úteis).`;
+  } else if (ganho < -0.005) {
+    resumo.innerHTML =
+      `Curiosamente, os preços informados rendem <strong>${brl(-ganho)}/dia</strong> a mais que o ponto ` +
+      `calculado — sinal de que ele não é um máximo com estes parâmetros (veja os avisos acima).`;
+  } else {
+    resumo.innerHTML =
+      `Seus preços atuais já estão <strong>praticamente no ótimo</strong>: a diferença de lucro é desprezível. Mandou bem! 👏`;
+  }
 }
 
 function setMath(id, tex) {

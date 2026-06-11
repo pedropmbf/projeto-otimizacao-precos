@@ -148,6 +148,48 @@ button:active { transform: translateY(1px); }
 .aviso { background: #fff6e0; border: 1px solid #f0d99a; color: #7a5a12; }
 .erro { background: #fdecea; border: 1px solid #f3b6b1; color: var(--vermelho); }
 
+/* ---------- Preços atuais (campo opcional) ---------- */
+.fieldset-atual { background: #fbf7f0; border-style: dashed; }
+.tag-opcional {
+  font-size: .68rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .03em; color: #9a7b53;
+  background: #fff; border: 1px solid #e3d4bd;
+  border-radius: 20px; padding: .05rem .5rem; margin-left: .35rem;
+}
+.ajuda-mini { font-size: .85rem; margin: 0 0 .6rem; }
+
+/* ---------- Comparação de ganho (feature extra) ---------- */
+#bloco-ganho {
+  background: linear-gradient(135deg, #eaf5ee, #f3faf5);
+  border: 1px solid #cfe9d8; border-radius: 12px;
+  padding: 1rem 1.1rem 1.2rem; margin-bottom: 1.2rem;
+}
+.ganho-cabecalho h3 { margin: 0 0 .8rem; color: var(--verde); font-size: 1.05rem; }
+.ganho-barras { display: grid; gap: .65rem; }
+.ganho-linha {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr auto;
+  align-items: center; gap: .6rem;
+}
+.ganho-label { font-size: .82rem; color: #4a5b50; font-weight: 600; }
+.ganho-trilho {
+  background: #dceede; border-radius: 8px; height: 1.4rem; overflow: hidden;
+}
+.ganho-fill {
+  height: 100%; border-radius: 8px; transition: width .5s ease;
+  min-width: 2%;
+}
+.ganho-fill.atual { background: var(--cafe-claro); }
+.ganho-fill.otimo { background: var(--verde); }
+.ganho-valor { font-size: .9rem; font-weight: 800; color: var(--cafe); white-space: nowrap; }
+.ganho-valor.verde { color: var(--verde); }
+.ganho-resumo { margin: .9rem 0 0; font-size: .95rem; color: #355041; }
+.verde { color: var(--verde); }
+@media (max-width: 480px) {
+  .ganho-linha { grid-template-columns: 1fr; gap: .2rem; }
+  .ganho-valor { justify-self: start; }
+}
+
 /* ---------- Gráfico (mapa de lucro) ---------- */
 #bloco-grafico h3 { color: var(--cafe); margin-bottom: .2rem; }
 .grafico {
